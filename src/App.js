@@ -2,71 +2,101 @@
 import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase'
+import FileUpload from './FileUpload'
 class App extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       user: null
     };
 
-
     this.handleAuth = this.handleAuth.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-
+    //this.setState=this.setState.bind(this);
   }
 
 
+  //  componentDidMount =()=>{
+  //    firebase.auth().onAuthStateChanged( user => {
+  //      this.setState({user:user});
+  //    });
+  //  }
 
-  componentWillMount() {
-    const db = firebase.firestore()
-    firebase.auth().onAuthStateChanged(user => {
-      this.setState({ user: user });
-    });
-  }
+  // componentWillMount() {
+  //   firebase.auth().onAuthStateChanged(user => {
+  //     if (user) {
+  //       this.setState({ user: user });
+  //     } else {
+  //       this.setState({ user:null });
+  //     }
 
+  //   });
+  // }
+
+    // var user = firebase.auth().currentUser;
+    // var provider = new firebase.auth.GoogleAuthProvider();
+    
+    // componentDidMount(){
+     
+    // }
   handleAuth() {
-    const provider = new firebase.auth.GoogleAuthProvider()
+     
+    
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().onIdTokenChanged(user=>{
+      this.setState({user:user})
+    })
     firebase.auth().signInWithPopup(provider)
-      .then(result => console.log(`${result.user.email} ha iniciado secion`))
-      .catch(error => console.log(`${error.code}: ${error.message}`))
+        .then(result => console.log(`${result.user.email}  `))
+        .catch(error => console.log(`${error.code}: ${error.message}`))
   }
 
-  handleLogout() {
-    firebase.auth().signOut()
-      .then(result => console.log(`${result.user.email} ha salido `))
-      .catch(error => console.log(`${error.code}: ${error.message}`))
-  }
 
-  renderloginButon() {
-    // si el usuario está logueado
-    if (this.state.user) {
-      return (
-        <div>
-          <img  width="100" src={this.state.user.photoURL} alt={this.state.user.displayName} />
-          <p> hola {this.state.user.displayName}!</p>
-          <button onClick={this.handleLogout}> </button>
-        </div>
-      );
-    } else {
-      return (
-        <button onClick={this.handleAuth}>registrate para ver o ingresar las fotos</button>
+handleLogout() {
+  firebase.auth().signOut()
+    .then(result => console.log(`${result.user.email} ha salido `))
+    .catch(error => console.log(`${error.code}: ${error.message}`))
+}
 
-      )
-    }
-    // si no haga otra cosa
 
-  }
 
-  render() {
+renderloginButon() {
+  // si el usuario está logueado
+  if (this.state.user) {
     return (
-      <div className="App-header">
-        <p>
-          {this.renderloginButon()}
-        </p>
-      </div>
+      < div >
+        <img  width="200vw" src={this.state.user.photoURL} alt={this.state.user.displayName} />
+        <p> hola {this.state.user.displayName}!</p>
+        <button onClick={this.handleLogout}>cerrar sesion </button>
+      <FileUpload/>
+      </div >
+   
+   );
+    
+  } else {
+    return (
+      <button onClick={this.handleAuth}>registrate para ver o ingresar las fotos</button>
     );
+
   }
+  // si no haga otra cosa
+
+}
+
+render() {
+  return (
+    <div className="App">
+      <div className="App-header">
+        <h2> albun personal </h2>
+        <div>
+          {this.renderloginButon()}
+        </div>
+      </div>
+    </div>
+  );
+}
 }
 
 // function App() {
@@ -91,3 +121,10 @@ class App extends Component {
 // }
 
 export default App;
+// service firebase.storage {
+//   match /b/{bucket}/o {
+//     match /{allPaths=**} {
+//       allow read, write: if request.auth != null;
+//     }
+//   }
+// }
