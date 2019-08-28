@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
+
+
 class FileUpload extends Component {
 
     constructor() {
@@ -14,8 +16,7 @@ class FileUpload extends Component {
     }
     handleUpload(event) {
         const file = event.target.files[0];
-        console.log(file.name +" este es el nombre de la foto ")
-        const storageRef = firebase.storage().ref(`/gs://fotosfamilia-e2cf5.appspot.com/fotos/${file.name}`);
+        const storageRef = firebase.storage().ref(`/fotosSubidas/${file.name}`);
         const task = storageRef.put(file);
         task.on('state_changed', snapshot => {
             let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
