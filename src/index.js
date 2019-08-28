@@ -16,7 +16,7 @@ firebase.initializeApp({
     authDomain: "fotosfamilia-e2cf5.firebaseapp.com",
     databaseURL: "https://fotosfamilia-e2cf5.firebaseio.com",
     projectId: "fotosfamilia-e2cf5",
-    storageBucket: "",
+    storageBucket: "fotosfamilia-e2cf5.appspot.com",
     messagingSenderId: "848959077894",
     appId: "1:848959077894:web:fab55f8ac6f6acb2"
 });
